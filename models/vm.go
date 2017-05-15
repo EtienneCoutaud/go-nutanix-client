@@ -31,8 +31,15 @@ type VMConfig struct {
 	AllowLiveMigrate      bool                  `json:"allow_live_migrate"`
 }
 
-// VMCreateConfig model Api (http://developer.nutanix.com/reference/v2/#definitions-create.dto.uhura.VmConfigDTO)
-type VMCreateConfig struct {
+// VMConfigGet model API
+type VMConfigGet struct {
+	Entities  []*VMConfig `json:"entities"`
+	Metadata  Metadata    `json:"metadata"`
+	ErrorInfo ErrorInfo   `json:"error_info"`
+}
+
+// VMConfigCreate model API (http://developer.nutanix.com/reference/v2/#definitions-create.dto.uhura.VmConfigDTO)
+type VMConfigCreate struct {
 	Name                  string                `json:"name" binding:"required"`
 	MemoryMB              int                   `json:"memory_mb" binding:"required"`
 	NumVCPUS              int                   `json:"num_vcpus" binding:"required"`
@@ -150,4 +157,14 @@ type VMDiskInfo struct {
 	StorageContainerUUID string        `json:"storage_container_uuid"`
 	IsThinProvisioned    bool          `json:"is_thin_provisioned"`
 	Size                 int           `json:"size"`
+}
+
+// VMFeature model API
+type VMFeature struct {
+}
+
+// SerialPortConfig model API
+type SerialPortConfig struct {
+	Index int    `json:"index"`
+	Type  string `json:"type"`
 }

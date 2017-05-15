@@ -7,8 +7,8 @@ import (
 	"github.com/etiennecoutaud/go-nutanix-sdk/models"
 )
 
-func GenerateVMConfigBasic() *models.VMCreateConfig {
-	return &models.VMCreateConfig{
+func GenerateVMConfigBasic() *models.VMConfigCreate {
+	return &models.VMConfigCreate{
 		Name:     "test",
 		MemoryMB: 1,
 	}
