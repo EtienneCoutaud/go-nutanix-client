@@ -3,75 +3,52 @@ package nutanix
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
-	"io/ioutil"
-	"log"
 
-	"github.com/etiennecoutaud/go-nutanix-sdk/client"
-	"github.com/etiennecoutaud/go-nutanix-sdk/endpoint"
-	"github.com/etiennecoutaud/go-nutanix-sdk/models"
+	"github.com/etiennecoutaud/go-nutanix-client/endpoint"
+	"github.com/etiennecoutaud/go-nutanix-client/models"
 )
 
-// Client struct to request API
-type Client struct {
-	*client.Client
+// GetVM GET, Use to get specific VM from uuid
+func (c *Client) GetVM(uuid string) (*models.VMConfig, error) {
+	// Build uri "/vms/{uuid}?include_vm_disk_config=true&include_vm_nic_config=true"
+	var buffer bytes.Buffer
+	buffer.WriteString(endpoint.VMS)
+	buffer.WriteString(uuid)
+	buffer.WriteString("?include_vm_nic_config=true")
+
+	resdata, err := c.GetRequest(buffer.String())
+	if err != nil {
+		return nil, err
+	}
+	var result models.VMConfig
+	err = json.Unmarshal(resdata, &result)
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
 }
 
-// GetVMS
+// GetVMS GET, Use to get all VM
 func (c *Client) GetVMS() (*models.VMConfigGet, error) {
-	req, err := c.NewRequest("GET", endpoint.VMS, nil)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := c.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	resdata, err := ioutil.ReadAll(res.Body)
+	resdata, err := c.GetRequest(endpoint.VMS)
 	if err != nil {
 		return nil, err
 	}
 	var result models.VMConfigGet
-	err = json.Unmarshal(resdata, &resdata)
+	err = json.Unmarshal(resdata, &result)
 	if err != nil {
 		return nil, err
-	}
-	if resp.StatusCode != 200 {
-		log.Fatal("Error when created VM, code:", resp.StatusCode)
-		return nil, errors.New("Fail to create VM")
 	}
 	return &result, nil
 }
 
 // CreateVM  POST, Use to create a new VM (http://developer.nutanix.com/reference/v2/?python#vms-post)
 func (c *Client) CreateVM(vm *models.VMConfigCreate) (*models.VMCreateResponse, error) {
-	if vm == nil {
-		return nil, errors.New("VM Body nil")
-	}
-	data, err := json.Marshal(vm)
-	if err != nil {
-		return nil, err
-	}
-	req, err := c.NewRequest("POST", endpoint.VMS, bytes.NewBuffer(data))
-	if err != nil {
-		return nil, err
-	}
-	resp, err := c.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	resdata, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
+	resdata, err := c.PostRequest(endpoint.VMS, vm)
 	var result models.VMCreateResponse
 	err = json.Unmarshal(resdata, &result)
 	if err != nil {
 		return nil, err
-	}
-	if resp.StatusCode != 200 {
-		log.Fatal("Error when created VM, code:", resp.StatusCode)
-		return nil, errors.New("Fail to create VM")
 	}
 	return &result, nil
 }

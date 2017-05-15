@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/etiennecoutaud/go-nutanix-sdk/models"
+	"github.com/etiennecoutaud/go-nutanix-client/models"
 )
 
 func GenerateVMConfigBasic() *models.VMConfigCreate {

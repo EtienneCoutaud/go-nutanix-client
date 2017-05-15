@@ -14,3 +14,30 @@ type Metadata struct {
 	Page               string `json:"page"`
 	StartIndex         string `json:"start_index"`
 }
+
+// ResultMetadata model API
+type ResultMetadata struct {
+	Instances  []*EntityMetadata `json:"instances"`
+	Title      string            `json:"title"`
+	Filters    []*Filter         `json:"filters"`
+	EntityType string            `json:"entity_type"`
+}
+
+// EntityMetadata model API
+type EntityMetadata struct {
+	AdditionalFields map[string]string `json:"additional_fields"`
+	EntityID         string            `json:"entity_id"`
+	ContextHintField string            `json:"context_hint_field"`
+	EntityName       string            `json:"entity_name"`
+	EntityType       string            `json:"entity_type"`
+	ClusterUUID      string            `json:"cluster_uuid"`
+	ContextHintValue string            `json:"context_hint_value"`
+}
+
+// Filter model API
+type Filter struct {
+	Operator      string `json:"operator"`
+	RHS           string `json:"rhs"`
+	LHS           string `json:"lhs"`
+	DisplayForRHS string `json:"display_for_rhs"`
+}
