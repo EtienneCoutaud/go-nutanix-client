@@ -1,7 +1,7 @@
 package models
 
-// VMConfig model API (http://developer.nutanix.com/reference/v2/?python#definitions-get.dto.uhura.VmConfigDTO)
-type VMConfig struct {
+// VM model API (http://developer.nutanix.com/reference/v2/?python#definitions-get.dto.uhura.VmConfigDTO)
+type VM struct {
 	ToolsRunningStatus    string                `json:"tools_running_status"`
 	NumVCPUS              int                   `json:"num_vcpus"`
 	VMNics                []*VMNic              `json:"vm_nics"`
@@ -31,19 +31,19 @@ type VMConfig struct {
 	AllowLiveMigrate      bool                  `json:"allow_live_migrate"`
 }
 
-// VMConfigGet model API
-type VMConfigGet struct {
-	Entities  []*VMConfig `json:"entities"`
-	Metadata  Metadata    `json:"metadata"`
-	ErrorInfo ErrorInfo   `json:"error_info"`
+// VMCollection model API
+type VMCollection struct {
+	Entities  []*VM     `json:"entities"`
+	Metadata  Metadata  `json:"metadata"`
+	ErrorInfo ErrorInfo `json:"error_info"`
 }
 
-// VMConfigCreate model API (http://developer.nutanix.com/reference/v2/#definitions-create.dto.uhura.VmConfigDTO)
-type VMConfigCreate struct {
+// VMConfig model API (http://developer.nutanix.com/reference/v2/#definitions-create.dto.uhura.VmConfigDTO)
+type VMConfig struct {
 	Name                  string                `json:"name" binding:"required"`
 	MemoryMB              int                   `json:"memory_mb" binding:"required"`
 	NumVCPUS              int                   `json:"num_vcpus" binding:"required"`
-	VMFeatures            bool                  `json:"vm_features"`
+	VMFeatures            map[*VMConfig]bool    `json:"vm_features"`
 	VMCustomizationConfig VMCustomizationConfig `json:"vm_customization_config"`
 	UUID                  string                `json:"uuid"`
 	Description           string                `json:"description"`
@@ -58,11 +58,6 @@ type VMConfigCreate struct {
 	HAPriority            int                   `json:"ha_priority"`
 	VMDisks               []*VMDisk             `json:"vm_disks"`
 	StorageContainerUUID  string                `json:"storage_container_uuid"`
-}
-
-// VMCreateResponse model API when created VM (http://developer.nutanix.com/reference/v2/?python#definitions-create.dto.acropolis.ReturnValueDTO$TaskIdDTO)
-type VMCreateResponse struct {
-	TaskUUID string `json:"task_uuid"`
 }
 
 // VMCustomizationConfig model API (http://developer.nutanix.com/reference/v2/#definitions-create.dto.acropolis.VMCustomizationConfigDTO)

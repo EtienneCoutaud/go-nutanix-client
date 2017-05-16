@@ -1,5 +1,24 @@
 package models
 
+// NetworkConfig model API
+type NetworkConfig struct {
+	UUID             string   `json:"uuid"`
+	VSwitchName      string   `json:"vswitch_name"`
+	Name             string   `json:"name"`
+	IPConfig         IPConfig `json:"ip_config"`
+	Annotation       string   `json:"annotation"`
+	VLANID           int      `json:"vlan_id" binding:"required"`
+	LogicalTimestamp int      `json:"logical_timestamp"`
+	NetworkType      string   `json:"network_type"`
+}
+
+// NetworkConfigCollection model API
+type NetworkConfigCollection struct {
+	Entities  []*NetworkConfig `json:"entities"`
+	Metadata  Metadata         `json:"metadata"`
+	ErrorInfo ErrorInfo        `json:"error_info"`
+}
+
 // NetworkConfigCreate model API
 type NetworkConfigCreate struct {
 	UUID             string   `json:"uuid"`
